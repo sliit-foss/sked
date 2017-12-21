@@ -15,20 +15,26 @@ angular.module('starter.controllers', [])
   $scope.remove = function(chat) {
     Chats.remove(chat);
   };
+
+  $scope.searchText = "";
 })
 
 .controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', function($scope, $location) {
   $scope.settings = {
     enableFriends: true
   };
+
+  $scope.logout = function(){
+    $location.path('/#/login');
+  }
 })
 
 .controller('LoginCtrl', function($scope, $location){
   $scope.login = function(){
-    $location.path('/tabs')
+    $location.path('/tab/dash')
   };
 })

@@ -2,8 +2,19 @@
   <ion-content>
     <ion-list>
     <ion-toggle  ng-model="settings.enableFriends">
-        Availability
+      <ion-icon name="leaf" item-start>
+        <i class="fa fa-user" aria-hidden="true"></i>
+      </ion-icon>
+      Availability
     </ion-toggle>
+      <ion-item ng-click="logout()">
+        <ion-icon name="leaf" item-start>
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+        </ion-icon>
+         Logout
+        <ion-icon name="rose" item-end></ion-icon>
+      </ion-item>
+
     </ion-list>
   </ion-content>
 </ion-view>

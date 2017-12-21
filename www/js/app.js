@@ -33,12 +33,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
     .state('login', {
       url: '/login',
-      templateUrl: 'templates/login.html'
+      templateUrl: 'templates/login.html',
+      controller: 'LoginCtrl'
     })
 
     .state('signup', {
       url: '/signup',
-      templateUrl: 'templates/signup.html'
+      templateUrl: 'templates/signup.html',
+      controller: 'AccountCtrl'
     })
 
   // setup an abstract state for the tabs directive

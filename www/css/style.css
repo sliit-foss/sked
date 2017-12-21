@@ -3,17 +3,30 @@
 @import url('https://fonts.googleapis.com/css?family=Righteous');
 @import url('https://fonts.googleapis.com/css?family=Fredoka+One');
 
+a{
+  text-decoration: none;
+}
+
 .tabs {
   height: 62px;
 }
 
 .tabs-top .tabs{
-  background-color: #1de9b6;
+  background-color: #00897B;
 }
 
 .tabs-top .tabs{
   padding-top: 12px;
   top: 0px;
+}
+
+.has-tabs-top {
+  top: 85px;
+}
+
+/*Active tab*/
+ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.activated{
+  color: #f1f2f3;
 }
 
 /*
@@ -108,6 +121,26 @@ Login screen
   font-family: 'Fredoka One', cursive;
   font-weight: 100;
   color: #b1b1b1;
+}
+
+/*Lecturers List*/
+.fa-smile-o {
+  color: #079d00;
+}
+
+.fa-frown-o {
+  color: #f32a2b;
+}
+
+.search-strip input{
+  width: 95%;
+  margin: auto;
+  border: none;
+  padding: 5px 10px;
+}
+
+.link-book {
+  color: rgb(12, 130, 152);
 }
 
 
