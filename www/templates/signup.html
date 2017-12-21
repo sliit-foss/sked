@@ -4,18 +4,18 @@
   </div>
 
   <div class="login-form">
-    <input type="text" placeholder="Name">
-    <input type="text" placeholder="Email">
-    <select>
-      <option>Year 1</option>
-      <option>Year 2</option>
-      <option>Year 3</option>
-      <option>Year 4</option>
+    <input type="text" placeholder="Name" ng-model="name" ng-class="{'input-error': isInvalidName }">
+    <input type="text" placeholder="Email" ng-model="email" ng-class="{'input-error': isInvalidEmail }">
+    <select ng-model="year">
+      <option value="1">Year 1</option>
+      <option value="2">Year 2</option>
+      <option value="3">Year 3</option>
+      <option value="4">Year 4</option>
     </select>
-    <input type="password" placeholder="Password">
-    <input type="password" placeholder="Confirm Password">
+    <input type="password" placeholder="Password" ng-model="password" ng-class="{'input-error': isInvalidPassword }">
+    <input type="password" placeholder="Confirm Password" ng-model="passwordConfirm" ng-class="{'input-error': isInvalidPasswordConfirm }">
 
-    <button class="login-button">SIGNUP</button>
+    <button class="login-button" ng-click="signUp()">SIGNUP</button>
     <p class="signup-msg">Already a member? <a href="#/login">Login</a></p>
   </div>
 </div>

@@ -113,7 +113,50 @@ angular.module('starter.controllers', [])
 })
 
 .controller('SignUpCtrl', function($scope, $location){
+
+  $scope.isInvalidName = false;
+  $scope.isInvalidEmail = false;
+  $scope.isInvalidPassword = false;
+  $scope.isInvalidConfirmPassword = false;
+
+  $scope.year = "1";
+
   $scope.signUp = function(){
 
+    console.log('sign up called');
+
+    $scope.isInvalidName = false;
+    $scope.isInvalidEmail = false;
+    $scope.isInvalidPassword = false;
+    $scope.isInvalidConfirmPassword = false;
+
+    if($scope.name == undefined || $scope.name == "") {
+      $scope.isInvalidName = true;
+    }else if($scope.email == undefined || $scope.email == ""){
+      $scope.isInvalidEmail = true;
+    }else if($scope.password == undefined || $scope.password == ""){
+      $scope.isInvalidPassword = true;
+    }else if($scope.passwordConfirm == undefined || $scope.passwordConfirm == ""){
+      $scope.isInvalidConfirmPassword = true;
+    }else if ($scope.password != $scope.passwordConfirm){
+      $scope.isInvalidPassword = true;
+      $scope.isInvalidConfirmPassword = true;
+    }else{
+      firebase.auth().createUserWithEmailAndPassword($scope.email, $scope.passwordConfirm).then(function(user){
+        user.updateProfile({
+          displayName: $scope.name
+        }).then(function(){
+            user.sendEmailVerification().then(function(){
+              console.log('email verification sent');
+            }).catch(function(err){
+              console.error(err);
+            })
+        }).catch(function(err){
+          console.error(err);
+        })
+      }).catch(function(err){
+        console.error(err);
+      })
+    }
   };
 });
