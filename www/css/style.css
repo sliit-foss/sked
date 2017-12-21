@@ -1,1 +1,113 @@
 /* Empty. Add your own CSS if you like */
+
+@import url('https://fonts.googleapis.com/css?family=Righteous');
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One');
+
+.tabs {
+  height: 62px;
+}
+
+.tabs-top .tabs{
+  background-color: #1de9b6;
+}
+
+.tabs-top .tabs{
+  padding-top: 12px;
+  top: 0px;
+}
+
+/*
+Login screen
+ */
+
+.login-bk-inner{
+  background-image: url("../img/bk-img.jpg");
+  -webkit-background-size:cover;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.3);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: -2;
+}
+
+.login-bk{
+  background-color: #0f4f60;
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  position: fixed;
+  opacity: 0.4;
+}
+
+.login-layer{
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  position: fixed;
+}
+
+.logo-center {
+  margin-top: 10%;
+  text-align: center;
+}
+
+.logo-center img{
+  width: 60px;
+}
+
+.logo-center h1{
+  margin-left: 10px;
+  font-family: 'Fredoka One', cursive;
+  letter-spacing: 20px;
+  margin-top: 10px;
+  color: #f1f2f3;
+}
+
+.logo-center h2{
+  margin-left: 10px;
+  font-family: 'Fredoka One', cursive;
+  letter-spacing: 10px;
+  margin-top: 10px;
+  color: #f1f2f3;
+}
+
+.login-form{
+  padding: 10px;
+  text-align: center;
+  margin-top: 5%;
+}
+
+.login-form input{
+  width: 80%;
+  padding-bottom: 5px;
+  margin: 20px auto;
+  border-bottom: 0.5px solid #c0c0c0;
+  background-color: transparent;
+  color: #d6d6d6;
+}
+
+.login-form .login-button{
+  padding: 20px;
+  background-color: #00897B;
+  border: none;
+  width: 80%;
+  margin-top: 5%;
+  color: #f5f5f5;
+  letter-spacing: 5px;
+
+  font-family: 'Fredoka One', cursive;
+
+}
+
+.login-form .signup-msg{
+  margin-top: 10%;
+  font-family: 'Fredoka One', cursive;
+  font-weight: 100;
+  color: #b1b1b1;
+}
+
+

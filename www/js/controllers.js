@@ -25,4 +25,10 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
-});
+})
+
+.controller('LoginCtrl', function($scope, $location){
+  $scope.login = function(){
+    $location.path('/tabs')
+  };
+})
