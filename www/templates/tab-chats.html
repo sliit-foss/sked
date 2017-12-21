@@ -1,8 +1,8 @@
 <ion-view view-title="Chats">
+  <div class="search-strip">
+    <input type="text" placeholder="Search" ng-model="searchText">
+  </div>
   <ion-content>
-    <div class="search-strip">
-      <input type="text" class="search-strip" placeholder="Search" ng-model="searchText">
-    </div>
     <div class="card" ng-repeat="chat in chats | filter: searchText">
       <a class="item item-avatar">
         <img src="img/avatar.png">

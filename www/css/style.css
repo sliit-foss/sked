@@ -21,7 +21,7 @@ a{
 }
 
 .has-tabs-top {
-  top: 85px;
+  top: 120px;
 }
 
 /*Active tab*/
@@ -130,6 +130,12 @@ Login screen
 
 .fa-frown-o {
   color: #f32a2b;
+}
+
+.search-strip{
+  position: fixed;
+  top: 75px;
+  width: 100%;
 }
 
 .search-strip input{
