@@ -2,7 +2,7 @@
   <div class="search-strip">
     <input type="text" placeholder="Search" ng-model="searchText">
   </div>
-  <ion-content>
+  <ion-content class="has-search-bar">
     <div class="card" ng-repeat="chat in chats | filter: searchText">
       <a class="item item-avatar">
         <img src="img/avatar.png">

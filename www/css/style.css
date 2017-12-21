@@ -21,6 +21,10 @@ a{
 }
 
 .has-tabs-top {
+  top: 85px;
+}
+
+.has-search-bar {
   top: 120px;
 }
 
