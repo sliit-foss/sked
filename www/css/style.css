@@ -180,4 +180,9 @@ Login screen
   color: rgb(12, 130, 152);
 }
 
-
+.email-verify{
+  margin-top: 40px;
+}
+.email-verify h3,p{
+  color: #f1f2f3;
+}

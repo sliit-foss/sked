@@ -67,6 +67,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       authenticated: false
     })
 
+    .state('email-verify',{
+      url: '/verify',
+      templateUrl: 'templates/email-verification.html',
+      authenticated:false
+    })
+
   // setup an abstract state for the tabs directive
     .state('tab', {
     url: '/tab',

@@ -95,10 +95,15 @@ angular.module('starter.controllers', [])
       firebase.auth().signInWithEmailAndPassword($scope.email, $scope.password)
         .then(function(user){
           $ionicLoading.hide();
-          $window.sessionStorage.setItem('uid', user.uid);
-          $window.sessionStorage.setItem('name', user.displayName);
-          $window.sessionStorage.setItem('emailVerified', user.emailVerified);
-          goToDashboard();
+          if(user.emailVerified){
+            $window.sessionStorage.setItem('uid', user.uid);
+            $window.sessionStorage.setItem('name', user.displayName);
+            $window.sessionStorage.setItem('emailVerified', user.emailVerified);
+            goToDashboard();
+          }else{
+            $location.path('/verify');
+            $scope.$apply();
+          }
         }).catch(function(err){
           console.error(err);
         })
@@ -148,6 +153,8 @@ angular.module('starter.controllers', [])
         }).then(function(){
             user.sendEmailVerification().then(function(){
               console.log('email verification sent');
+              $location.path('/verify');
+              $scope.$apply();
             }).catch(function(err){
               console.error(err);
             })
