@@ -1,6 +1,8 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
+.controller('DashCtrl', function($scope, $ionicHistory) {
+  $ionicHistory.clearHistory();
+})
 
 .controller('ChatsCtrl', function($scope, Chats) {
   // With the new view caching in Ionic, Controllers are only called
@@ -19,22 +21,99 @@ angular.module('starter.controllers', [])
   $scope.searchText = "";
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
+.controller('ChatDetailCtrl', function($scope, $stateParams, Chats, $window) {
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('AccountCtrl', function($scope, $location) {
+.controller('AccountCtrl', function($scope, $location, $ionicPopup, $window) {
   $scope.settings = {
     enableFriends: true
   };
 
   $scope.logout = function(){
-    $location.path('/#/login');
+    var confirmPopup = $ionicPopup.confirm({
+      title: 'Logout',
+      template:'Are you sure you want to logout?'
+    });
+
+    confirmPopup.then(function(res){
+      if(res){
+        firebase.auth().signOut().then(function(){
+          $window.sessionStorage.removeItem('uid');
+          $window.sessionStorage.removeItem('displayName');
+          $window.sessionStorage.removeItem('emailVerified');
+          $location.path('/#/login');
+          $scope.$apply();
+        }).catch(function(err){
+          console.error(err);
+        })
+      }
+    })
   }
 })
 
-.controller('LoginCtrl', function($scope, $location){
+.controller('LoginCtrl', function($scope, $location, $ionicLoading, $window, $ionicHistory){
+
+  $ionicHistory.clearHistory();
+
+  $scope.isLoading = true;
+
+  var user = firebase.auth.currentUser;
+
+  $ionicLoading.show({
+    template: '<ion-spinner icon="lines"></ion-spinner><br>Loading application data...'
+  });
+
+  if(user){
+    $ionicLoading.hide();
+    $window.sessionStorage.setItem('uid', user.uid);
+    $window.sessionStorage.setItem('name', user.displayName);
+    $window.sessionStorage.setItem('emailVerified', user.emailVerified);
+    goToDashboard();
+  }else{
+    $scope.isLoading = false;
+    $ionicLoading.hide();
+  }
+
   $scope.login = function(){
-    $location.path('/tab/dash')
+    console.log('login called');
+    //validation
+    if($scope.email == "" || $scope.email == undefined){
+      $scope.isInvalidEmail = true;
+      $scope.isInvalidPassword = false;
+    }else if ($scope.password == "" || $scope.password == undefined){
+      $scope.isInvalidPassword = true;
+      $scope.isInvalidEmail = false;
+    }else{
+      $scope.isInvalidEmail = false;
+      $scope.isInvalidPassword = false;
+
+      $ionicLoading.show({
+        template: '<ion-spinner icon="lines"></ion-spinner><br>Logging in ...'
+      });
+
+      firebase.auth().signInWithEmailAndPassword($scope.email, $scope.password)
+        .then(function(user){
+          $ionicLoading.hide();
+          $window.sessionStorage.setItem('uid', user.uid);
+          $window.sessionStorage.setItem('name', user.displayName);
+          $window.sessionStorage.setItem('emailVerified', user.emailVerified);
+          goToDashboard();
+        }).catch(function(err){
+          console.error(err);
+        })
+    }
   };
+
+  function goToDashboard(){
+    console.log('goto dashboard called');
+    $location.path('/tab/dash');
+    $scope.$apply();
+  }
 })
+
+.controller('SignUpCtrl', function($scope, $location){
+  $scope.signUp = function(){
+
+  };
+});

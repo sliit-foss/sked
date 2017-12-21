@@ -28,6 +28,10 @@ a{
   top: 120px;
 }
 
+.item-divider {
+  background-color: transparent;
+}
+
 /*Active tab*/
 ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.tab-item-active, ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.active, ion-tabs.tabs-striped.tabs-color-active-positive .tab-item.activated{
   color: #f1f2f3;
@@ -105,6 +109,29 @@ Login screen
   border-bottom: 0.5px solid #c0c0c0;
   background-color: transparent;
   color: #d6d6d6;
+  padding-left: 5px;
+}
+
+.login-form select{
+  width: 80%;
+  padding-bottom: 5px;
+  border-bottom: 0.5px solid #c0c0c0;
+  background-color: transparent;
+  color: #d6d6d6;
+  margin-bottom: 0px;
+  margin-top: 10px;
+  height: 40px;
+  padding-left: 5px;
+}
+
+.login-form option{
+  color: #222222;
+  width: 80%;
+}
+
+/*Input Errors*/
+.input-error {
+  border-bottom: 0.5px solid #c00009 !important;
 }
 
 .login-form .login-button{

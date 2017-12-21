@@ -1,14 +1,14 @@
-<div class="login-layer">
+<div class="login-layer" ng-hide="isLoading">
   <div class="logo-center">
     <img src="img/icon.png">
     <h1>SKED</h1>
   </div>
 
   <div class="login-form">
-    <input type="text" placeholder="Email">
-    <input type="password" placeholder="Password">
+    <input type="text" placeholder="Email" ng-model="email" ng-class="{'input-error': isInvalidEmail }">
+    <input type="password" placeholder="Password" ng-model="password" ng-class="{'input-error': isInvalidPassword }">
     <button class="login-button" ng-click="login()">LOGIN</button>
-    <p class="signup-msg">Not a member yet? <a href="/#/signup">Sign Up</a></p>
+    <p class="signup-msg">Not a member yet? <a href="#/signup">Sign Up</a></p>
   </div>
 </div>
 

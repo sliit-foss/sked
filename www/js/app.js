@@ -5,9 +5,9 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'firebase'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $window, $location) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -21,9 +21,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
       StatusBar.hide();
     }
   });
+
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+    if(toState.authenticated){
+      if(!$window.sessionStorage.getItem('uid')){
+        $location.path('/login');
+      }
+    }else{
+      if($window.sessionStorage.getItem('uid')){
+        $location.path('/tab/dash');
+      }
+    }
+  })
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
+
+  var config = {
+    apiKey: "AIzaSyBQ_BNi2I8JTaoXjhghrLZCAkojKYOMidg",
+    authDomain: "sked-uee-mobile-app.firebaseapp.com",
+    databaseURL: "https://sked-uee-mobile-app.firebaseio.com",
+    projectId: "sked-uee-mobile-app",
+    storageBucket: "sked-uee-mobile-app.appspot.com",
+    messagingSenderId: "809656355152"
+  };
+  firebase.initializeApp(config);
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
@@ -34,13 +56,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
     .state('login', {
       url: '/login',
       templateUrl: 'templates/login.html',
-      controller: 'LoginCtrl'
+      controller: 'LoginCtrl',
+      authenticated: false
     })
 
     .state('signup', {
       url: '/signup',
       templateUrl: 'templates/signup.html',
-      controller: 'AccountCtrl'
+      controller: 'AccountCtrl',
+      authenticated: false
     })
 
   // setup an abstract state for the tabs directive
@@ -59,7 +83,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         templateUrl: 'templates/tab-dash.html',
         controller: 'DashCtrl'
       }
-    }
+    },
+    authenticated: true
   })
 
   .state('tab.chats', {
@@ -69,7 +94,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           templateUrl: 'templates/tab-chats.html',
           controller: 'ChatsCtrl'
         }
-      }
+      },
+    authenticated: true
     })
     .state('tab.chat-detail', {
       url: '/chats/:chatId',
@@ -78,7 +104,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
           templateUrl: 'templates/chat-detail.html',
           controller: 'ChatDetailCtrl'
         }
-      }
+      },
+      authenticated: true
     })
 
   .state('tab.account', {
@@ -88,7 +115,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
         templateUrl: 'templates/tab-account.html',
         controller: 'AccountCtrl'
       }
-    }
+    },
+    authenticated: true
   });
 
   // if none of the above states are matched, use this as the fallback
