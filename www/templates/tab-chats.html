@@ -6,7 +6,7 @@
     <div class="card" ng-repeat="lecturer in lecturers | filter: searchText | orderBy:'name'" ng-if="lecturer.uid">
       <a class="item item-avatar">
         <img ng-src="{{lecturer.photo}}">
-        <div><b>{{lecturer.salutation}} {{lecturer.name}}
+        <div><b>{{lecturer.salutation}} {{lecturer.name}}</b>
           <i ng-show="lecturer.available" class="fa fa-circle" aria-hidden="true" style="margin-left: 1px; color: #33cd5f; font-size: 10px;"></i>
         </div>
         <div class="post-text"><small>{{lecturer.post}}</small></div>

@@ -1,7 +1,16 @@
 <ion-view view-title="Account">
   <ion-content>
+    <div class="lecturer-details" style="margin-bottom: 30px;">
+      <img src="img/avatar.jpg" style="width: 100px; height: 120px">
+      <h4>
+        <b>{{displayName}}</b>
+      </h4>
+      <p>{{role | uppercase}}</p>
+      <!--<small>Year 4</small>-->
+    </div>
+
     <ion-list>
-    <ion-toggle  ng-model="settings.enableFriends">
+    <ion-toggle  ng-model="settings.availability" ng-if="role == 'lecturer'" ng-change="toggleAvailability()">
       <ion-icon name="leaf" item-start>
         <i class="fa fa-user" aria-hidden="true"></i>
       </ion-icon>

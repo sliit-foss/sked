@@ -1,10 +1,24 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, $ionicHistory) {
+.controller('DashCtrl', function($scope, $ionicHistory, $window, $ionicLoading) {
   $ionicHistory.clearHistory();
+
+  var ref = firebase.database().ref('appointments');
+
+  var uid = $window.sessionStorage.getItem('uid');
+
+  $ionicLoading.show({
+    template: '<ion-spinner icon="lines"></ion-spinner><br>Loading data...'
+  });
+
+  ref.orderByChild("student_id").equalTo(uid).on('value', function(snap){
+    $scope.appointments = snap.val();
+    $scope.$apply();
+    $ionicLoading.hide();
+  });
 })
 
-.controller('ChatsCtrl', function($scope, $ionicLoading) {
+.controller('ChatsCtrl', function($scope, $ionicLoading, $firebaseArray) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -19,12 +33,16 @@ angular.module('starter.controllers', [])
     template: '<ion-spinner icon="lines"></ion-spinner><br>Loading data...'
   });
 
-  lecRef.once('value', function(snap){
-    $scope.lecturers = snap.val();
-    console.log($scope.lecturers);
-    $scope.$apply();
-    $ionicLoading.hide();
-  });
+  // lecRef.once('value', function(snap){
+  //   $scope.lecturers = snap.val();
+  //   console.log($scope.lecturers);
+  //   $scope.$apply();
+  //   $ionicLoading.hide();
+  // });
+
+  $scope.lecturers = $firebaseArray(lecRef);
+
+  $ionicLoading.hide();
 
   $scope.searchText = "";
 })
@@ -41,9 +59,9 @@ angular.module('starter.controllers', [])
 
   ref.orderByChild("uid").equalTo(uid).on('value', function(snap){
     if(snap.val().length == 1){
-      $scope.lecturer = snap.val()[0];
+      $scope.lecturer = snap.val()[uid];
     }else{
-      $scope.lecturer = snap.val()[1];
+      $scope.lecturer = snap.val()[uid];
     }
 
     console.log(snap.val());
@@ -54,19 +72,22 @@ angular.module('starter.controllers', [])
 
   $scope.requestAppointment = function(){
     console.log('request method called');
-    console.log($scope.formData.date);
+    console.log($scope.formData.apptDate);
     console.log($scope.formData.message);
 
-    if($scope.formData.date == undefined || $scope.formData.date == ""){
+    if($scope.formData.apptDate == undefined || $scope.formData.apptDate == ""){
 
     }else{
       console.log('else');
-      var app_ref = firebase.database().ref('appointments/'+uid).push();
+      console.log('lecturer', $scope.lecturer);
+      var app_ref = firebase.database().ref('appointments').push();
       app_ref.set({
-        lecturer_id: uid,
-        date: $scope.formData.date,
+        lecturer: $scope.lecturer,
+        date: new Date($scope.formData.apptDate).toJSON().slice(0,19),
         message: $scope.formData.message,
-        user_id: $window.sessionStorage.getItem('uid')
+        student_id: $window.sessionStorage.getItem('uid'),
+        student: $window.sessionStorage.getItem('uid'), //TODO: set student object
+        status: false
       });
 
       $location.path('/tab/dash');
@@ -75,8 +96,22 @@ angular.module('starter.controllers', [])
 })
 
 .controller('AccountCtrl', function($scope, $location, $ionicPopup, $window) {
+
+  $scope.displayName = $window.sessionStorage.getItem('name');
+  $scope.role = $window.sessionStorage.getItem('role');
+  $scope.uid = $window.sessionStorage.getItem('uid');
   $scope.settings = {
     enableFriends: true
+  };
+
+  $scope.settings = {
+    availability: true
+  };
+
+  $scope.toggleAvailability = function(){
+    console.log($scope.settings.availability);
+    var lecturers_ref = firebase.database().ref('lecturers');
+    lecturers_ref.child($scope.uid).child('available').set($scope.settings.availability);
   };
 
   $scope.logout = function(){
@@ -144,15 +179,35 @@ angular.module('starter.controllers', [])
       firebase.auth().signInWithEmailAndPassword($scope.email, $scope.password)
         .then(function(user){
           $ionicLoading.hide();
-          if(user.emailVerified){
-            $window.sessionStorage.setItem('uid', user.uid);
-            $window.sessionStorage.setItem('name', user.displayName);
-            $window.sessionStorage.setItem('emailVerified', user.emailVerified);
-            goToDashboard();
-          }else{
-            $location.path('/verify');
-            $scope.$apply();
-          }
+
+          var role;
+          var name;
+
+          var ref = firebase.database().ref('users/'+user.uid);
+          ref.once('value', function(snap){
+              role = snap.val().role;
+              name = snap.val().name;
+              console.log('role',role,snap.val());
+            if(user.emailVerified && role == "student"){
+              $window.sessionStorage.setItem('uid', user.uid);
+              $window.sessionStorage.setItem('name', user.displayName);
+              $window.sessionStorage.setItem('emailVerified', user.emailVerified);
+              $window.sessionStorage.setItem('role', role);
+              goToDashboard();
+            }else if(role == "lecturer"){
+              $window.sessionStorage.setItem('uid', user.uid);
+              $window.sessionStorage.setItem('name', name);
+              $window.sessionStorage.setItem('emailVerified', user.emailVerified);
+              $window.sessionStorage.setItem('role', role);
+              goToDashboard();
+            }else{
+              $location.path('/verify');
+              $scope.$apply();
+            }
+
+          });
+
+
         }).catch(function(err){
           console.error(err);
         })
@@ -210,6 +265,14 @@ angular.module('starter.controllers', [])
         }).catch(function(err){
           console.error(err);
         })
+
+        //add user object
+        var user_ref = firebase.database().ref('users/'+user.uid);
+        user_ref.push({
+          name: $scope.name,
+          role: 'student'
+        })
+
       }).catch(function(err){
         console.error(err);
       })
