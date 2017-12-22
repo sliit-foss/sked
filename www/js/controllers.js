@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
   $ionicHistory.clearHistory();
 })
 
-.controller('ChatsCtrl', function($scope) {
+.controller('ChatsCtrl', function($scope, $ionicLoading) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -15,18 +15,25 @@ angular.module('starter.controllers', [])
 
   var lecRef = firebase.database().ref('lecturers');
 
+  $ionicLoading.show({
+    template: '<ion-spinner icon="lines"></ion-spinner><br>Loading data...'
+  });
+
   lecRef.once('value', function(snap){
     $scope.lecturers = snap.val();
     console.log($scope.lecturers);
     $scope.$apply();
+    $ionicLoading.hide();
   });
 
   $scope.searchText = "";
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, $ionicLoading) {
-  var uid = $stateParams.lecturerId
+.controller('ChatDetailCtrl', function($scope, $stateParams, $ionicLoading, $window, $location) {
+  var uid = $stateParams.lecturerId;
   var ref = firebase.database().ref('lecturers');
+
+  $scope.formData = {};
 
   $ionicLoading.show({
     template: '<ion-spinner icon="lines"></ion-spinner><br>Loading data...'
@@ -41,9 +48,30 @@ angular.module('starter.controllers', [])
 
     console.log(snap.val());
     console.log($scope.lecturer);
-    $scope.$apply();
+    // $scope.$apply();
     $ionicLoading.hide();
-  })
+  });
+
+  $scope.requestAppointment = function(){
+    console.log('request method called');
+    console.log($scope.formData.date);
+    console.log($scope.formData.message);
+
+    if($scope.formData.date == undefined || $scope.formData.date == ""){
+
+    }else{
+      console.log('else');
+      var app_ref = firebase.database().ref('appointments/'+uid).push();
+      app_ref.set({
+        lecturer_id: uid,
+        date: $scope.formData.date,
+        message: $scope.formData.message,
+        user_id: $window.sessionStorage.getItem('uid')
+      });
+
+      $location.path('/tab/dash');
+    }
+  };
 })
 
 .controller('AccountCtrl', function($scope, $location, $ionicPopup, $window) {
