@@ -2,11 +2,11 @@
   <ion-content class="padding">
     <div class="card" ng-repeat="apt in appointments">
       <a class="item item-avatar">
-        <img ng-src="{{apt.lecturer.photo}}">
-        <div><b>{{apt.lecturer.salutation}} {{apt.lecturer.name}}</b>
-          <i ng-show="apt.lecturer.available" class="fa fa-circle" aria-hidden="true" style="margin-left: 1px; color: #33cd5f; font-size: 10px;"></i>
+        <img ng-src="{{lecturers[apt.lecturer].photo}}">
+        <div><b>{{lecturers[apt.lecturer].salutation}} {{lecturers[apt.lecturer].name}}</b>
+          <i ng-show="lecturers[apt.lecturer].available" class="fa fa-circle" aria-hidden="true" style="margin-left: 1px; color: #33cd5f; font-size: 10px;"></i>
         </div>
-        <small>{{apt.lecturer.post}}</small>
+        <small>{{lecturers[apt.lecturer].post}}</small>
         <p>{{apt.message}}</p>
       </a>
       <div class="item item-divider">

@@ -1,9 +1,10 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope, $ionicHistory, $window, $ionicLoading) {
+.controller('DashCtrl', function($scope, $ionicHistory, $window, $ionicLoading, $firebaseObject, $firebaseArray) {
   $ionicHistory.clearHistory();
 
   var ref = firebase.database().ref('appointments');
+  var lect_ref = firebase.database().ref('lecturers');
 
   var uid = $window.sessionStorage.getItem('uid');
 
@@ -11,11 +12,18 @@ angular.module('starter.controllers', [])
     template: '<ion-spinner icon="lines"></ion-spinner><br>Loading data...'
   });
 
-  ref.orderByChild("student_id").equalTo(uid).on('value', function(snap){
-    $scope.appointments = snap.val();
-    $scope.$apply();
-    $ionicLoading.hide();
-  });
+  $scope.lecturers = $firebaseObject(lect_ref);
+
+  // ref.orderByChild("student_id").equalTo(uid).on('value', function(snap){
+  //   $scope.appointments = snap.val();
+  //   $scope.$apply();
+  //   $ionicLoading.hide();
+  // });
+
+  var student_appointments_ref = ref.orderByChild("student_id").equalTo(uid).ref;
+
+  $scope.appointments = $firebaseObject(student_appointments_ref);
+  $ionicLoading.hide();
 })
 
 .controller('ChatsCtrl', function($scope, $ionicLoading, $firebaseArray) {
@@ -47,7 +55,7 @@ angular.module('starter.controllers', [])
   $scope.searchText = "";
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, $ionicLoading, $window, $location) {
+.controller('ChatDetailCtrl', function($scope, $stateParams, $ionicLoading, $window, $location, $ionicPopup) {
   var uid = $stateParams.lecturerId;
   var ref = firebase.database().ref('lecturers');
 
@@ -78,19 +86,28 @@ angular.module('starter.controllers', [])
     if($scope.formData.apptDate == undefined || $scope.formData.apptDate == ""){
 
     }else{
-      console.log('else');
-      console.log('lecturer', $scope.lecturer);
-      var app_ref = firebase.database().ref('appointments').push();
-      app_ref.set({
-        lecturer: $scope.lecturer,
-        date: new Date($scope.formData.apptDate).toJSON().slice(0,19),
-        message: $scope.formData.message,
-        student_id: $window.sessionStorage.getItem('uid'),
-        student: $window.sessionStorage.getItem('uid'), //TODO: set student object
-        status: false
+
+      var confirmPopup = $ionicPopup.confirm({
+        title: 'Appointment',
+        template:'Are you sure you want to add this appointment?'
       });
 
-      $location.path('/tab/dash');
+
+      confirmPopup.then(function(res) {
+        if (res) {
+          var app_ref = firebase.database().ref('appointments').push();
+          app_ref.set({
+            lecturer: uid,
+            date: new Date($scope.formData.apptDate).toJSON().slice(0,19),
+            message: $scope.formData.message,
+            student_id: $window.sessionStorage.getItem('uid'),
+            student: $window.sessionStorage.getItem('uid'), //TODO: set student object
+            status: false
+          });
+
+          $location.path('/tab/dash');
+        }
+      });
     }
   };
 })
