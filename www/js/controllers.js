@@ -95,22 +95,22 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('AccountCtrl', function($scope, $location, $ionicPopup, $window) {
+.controller('AccountCtrl', function($scope, $location, $ionicPopup, $window, $firebaseObject) {
 
   $scope.displayName = $window.sessionStorage.getItem('name');
   $scope.role = $window.sessionStorage.getItem('role');
   $scope.uid = $window.sessionStorage.getItem('uid');
-  $scope.settings = {
-    enableFriends: true
-  };
 
-  $scope.settings = {
-    availability: true
-  };
+  var lecturers_ref = firebase.database().ref('lecturers');
+
+  $scope.settings = {};
+
+  lecturers_ref.child($scope.uid).child('available').on('value', function(snap){
+    $scope.settings.availability = snap.val();
+  });
 
   $scope.toggleAvailability = function(){
     console.log($scope.settings.availability);
-    var lecturers_ref = firebase.database().ref('lecturers');
     lecturers_ref.child($scope.uid).child('available').set($scope.settings.availability);
   };
 
