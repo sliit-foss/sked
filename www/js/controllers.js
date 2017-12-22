@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
   $ionicHistory.clearHistory();
 })
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('ChatsCtrl', function($scope) {
   // With the new view caching in Ionic, Controllers are only called
   // when they are recreated or on app start, instead of every page change.
   // To listen for when this page is active (for example, to refresh data),
@@ -13,16 +13,37 @@ angular.module('starter.controllers', [])
   //$scope.$on('$ionicView.enter', function(e) {
   //});
 
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  };
+  var lecRef = firebase.database().ref('lecturers');
+
+  lecRef.once('value', function(snap){
+    $scope.lecturers = snap.val();
+    console.log($scope.lecturers);
+    $scope.$apply();
+  });
 
   $scope.searchText = "";
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats, $window) {
-  $scope.chat = Chats.get($stateParams.chatId);
+.controller('ChatDetailCtrl', function($scope, $stateParams, $ionicLoading) {
+  var uid = $stateParams.lecturerId
+  var ref = firebase.database().ref('lecturers');
+
+  $ionicLoading.show({
+    template: '<ion-spinner icon="lines"></ion-spinner><br>Loading data...'
+  });
+
+  ref.orderByChild("uid").equalTo(uid).on('value', function(snap){
+    if(snap.val().length == 1){
+      $scope.lecturer = snap.val()[0];
+    }else{
+      $scope.lecturer = snap.val()[1];
+    }
+
+    console.log(snap.val());
+    console.log($scope.lecturer);
+    $scope.$apply();
+    $ionicLoading.hide();
+  })
 })
 
 .controller('AccountCtrl', function($scope, $location, $ionicPopup, $window) {

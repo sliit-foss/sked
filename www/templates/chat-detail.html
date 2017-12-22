@@ -1,8 +1,17 @@
-<ion-view view-title="{{chat.name}}">
-  <ion-content class="padding">
-    <img ng-src="{{chat.face}}" style="width: 64px; height: 64px">
-    <p>
-      {{chat.lastText}}
-    </p>
+<ion-view view-title="{{lecturer.name}}">
+  <ion-content>
+    <div class="lecturer-details">
+      <img ng-src="{{lecturer.photo}}" style="width: 100px; height: 120px">
+      <p style="color: #33cd5f;"><small ng-show="lecturer.available">Available</small></p>
+      <h4>
+        <b>{{lecturer.salutation}} {{lecturer.name}}</b>
+      </h4>
+      <p><b>{{lecturer.post}}</b></p>
+      <small>{{lecturer.department}}</small>
+    </div>
+    <div class="appointment-details">
+      <input type="date">
+      <textarea rows="10" placeholder="Message"></textarea>
+    </div>
   </ion-content>
 </ion-view>

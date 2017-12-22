@@ -155,6 +155,11 @@ Login screen
 }
 
 /*Lecturers List*/
+.post-text small{
+  word-wrap: break-word;
+  width: 40px;
+}
+
 .fa-smile-o {
   color: #079d00;
 }
@@ -185,4 +190,31 @@ Login screen
 }
 .email-verify h3,p{
   color: #f1f2f3;
+}
+
+/*Lecturer Details*/
+.lecturer-details{
+  text-align: center;
+  color: #222222;
+}
+
+.lecturer-details p{
+  color: #222222;
+  margin: 0;
+}
+
+.lecturer-details h4{
+  margin-bottom: 4px;
+}
+
+.lecturer-details img{
+
+}
+
+.appointment-details{
+  width: 90%;
+}
+
+appointment-detail textarea{
+  width: 90%;
 }
