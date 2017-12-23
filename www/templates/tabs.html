@@ -6,17 +6,27 @@ navigation history that also transitions its views in and out.
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
 
   <!-- Dashboard Tab -->
-  <ion-tab title="Pending" icon-off="ion-ios-calendar-outline" icon-on="ion-ios-calendar" href="#/tab/dash">
+  <ion-tab title="Pending" icon-off="ion-ios-calendar-outline" icon-on="ion-ios-calendar" href="#/tab/dash" ng-if="role=='student'">
     <ion-nav-view name="tab-dash"></ion-nav-view>
   </ion-tab>
 
   <!-- Chats Tab -->
-  <ion-tab title="Lecturers" icon-off="ion-ios-people-outline" icon-on="ion-ios-people" href="#/tab/chats">
+  <ion-tab title="Lecturers" icon-off="ion-ios-people-outline" icon-on="ion-ios-people" href="#/tab/chats" ng-if="role=='student'">
     <ion-nav-view name="tab-chats"></ion-nav-view>
   </ion-tab>
 
+  <!-- Lecturer Approved Appointments Tab -->
+  <ion-tab title="Approved" icon-off="ion-ios-calendar-outline" icon-on="ion-ios-calendar" href="#/tab/lecturer-appointments-approved" ng-if="role=='lecturer'">
+    <ion-nav-view name="tab-lecturer-appointments-approved"></ion-nav-view>
+  </ion-tab>
+
+  <!-- Lecturer Appointments Tab -->
+  <ion-tab title="Appointments" icon-off="ion-ios-calendar-outline" icon-on="ion-ios-calendar" href="#/tab/lecturer-appointments" ng-if="role=='lecturer'">
+    <ion-nav-view name="tab-lecturer-appointments"></ion-nav-view>
+  </ion-tab>
+
   <!-- Account Tab -->
-  <ion-tab title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account">
+  <ion-tab title="Account" icon-off="ion-ios-gear-outline" icon-on="ion-ios-gear" href="#/tab/account" ng-if="true">
     <ion-nav-view name="tab-account"></ion-nav-view>
   </ion-tab>
 

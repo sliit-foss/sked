@@ -1,6 +1,6 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
-    <div class="card" ng-repeat="apt in appointments | orderBy: 'date'">
+    <div class="card" ng-repeat="apt in appointments">
       <a class="item item-avatar">
         <img ng-src="{{lecturers[apt.lecturer].photo}}">
         <div><b>{{lecturers[apt.lecturer].salutation}} {{lecturers[apt.lecturer].name}}</b>
@@ -10,9 +10,7 @@
         <p>{{apt.message}}</p>
       </a>
       <div class="item item-divider">
-        <b style="float:left; color: #deb300" ng-if="apt.status == undefined">Pending</b>
-        <b style="float:left; color: #de0007" ng-if="apt.status == false">Declined</b>
-        <b style="float:left; color: #27c01e" ng-if="apt.status">Accepted for {{apt.time | date:'h:mma'}}</b>
+        <b style="float:left;">Pending</b>
         <b style="float: right; color:#0b63a0">{{apt.date | date:'dd-MM-yyyy'}}</b>
       </div>
     </div>

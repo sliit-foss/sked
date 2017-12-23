@@ -1,0 +1,18 @@
+<ion-view view-title="{{lecturer.name}}">
+  <ion-content ng-hide="isLoading">
+    <div class="lecturer-details">
+      <img src="img/avatar.jpg" style="width: 100px; height: 120px">
+      <h4>
+        <b>{{user.name}}</b>
+      </h4>
+      <p><b>{{user.email}}</b></p>
+      <small>{{appointment.message}}</small>
+    </div>
+    <div class="appointment-details">
+      <input type="date" placeholder="Datetime" ng-model="formData.apptDate">
+      <input type="time" placeholder="Date" ng-model="formData.apptTime">
+      <button ng-click="acceptAppointment()">ACCEPT APPOINTMENT</button>
+      <button ng-click="declineAppointment()" style="background: linear-gradient(#c70005, #c7595c )">DECLINE APPOINTMENT</button>
+    </div>
+  </ion-content>
+</ion-view>
