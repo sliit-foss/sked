@@ -1,4 +1,4 @@
-#SKED
+# SKED
 Sked is a mobile application developed using the Ionic Framework to manage appointments with lecturers at SLIIT. 
 
 # Implementation
